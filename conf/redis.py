@@ -3,6 +3,7 @@
 from redis import ConnectionPool, StrictRedis
 from conf.config import REDIS_HOST, REDIS_PORT
 
+
 class Redis:
     def __init__(self):
         self.pool = ConnectionPool(

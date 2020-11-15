@@ -6,6 +6,7 @@ from multiprocessing import Process
 
 from job.affiliation_keywords import update_affiliation_keyword_job
 from job.new_publish_atricle import update_affiliation_new_article_job
+from job.load_affiliation_data import load_affiliation_data_job
 
 
 def main_loop():
@@ -27,6 +28,9 @@ def register_schedule_task():
     # 机构最新发表论文
     # schedule.every().saturday.at("16:00").do(pool_job,update_affiliation_new_article_job())
     schedule.every(4).seconds.do(pool_job, update_affiliation_new_article_job)
+
+    #
+    schedule.every().saturday.at("20:30").do(pool_job, load_affiliation_data_job)
 
 
 if __name__ == "__main__":

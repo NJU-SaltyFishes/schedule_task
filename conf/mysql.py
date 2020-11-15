@@ -23,7 +23,6 @@ class MySQL:
             database=self.database)
 
     def begin(self):
-        se
         self.conn.begin()
 
     def rollback(self):
