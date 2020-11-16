@@ -10,11 +10,14 @@ from models.cache_const import AFFILIATION_ALL_ID, AFFILIATION_RELATED_ARTICLE_I
 from utils.time import HOUR
 from utils.util import chunks
 
+from functools import lru_cache
+
 
 class AffiliationLoader:
     def __init__(self):
         self.affiliation_ids = []
         self.related_article_dict = {}
+
 
     def load_affiliation_data(self):
         self._load_affiliation_ids()
@@ -40,6 +43,7 @@ class AffiliationLoader:
             traceback.format_exc()
             return
 
+    @lru_cache()
     def _load_affiliation_ids(self):
         sql = '''SELECT id FROM affiliation'''
         Cursor.execute(sql)
@@ -47,6 +51,7 @@ class AffiliationLoader:
         self.affiliation_ids = [i[0] for i in raw_result]
         print("{} affiliation_total_count: {}".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), len(self.affiliation_ids)))
 
+    @lru_cache()
     def _load_related_article_dict(self):
 
         for ids in chunks(self.affiliation_ids, 500):
