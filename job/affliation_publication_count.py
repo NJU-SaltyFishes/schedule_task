@@ -52,7 +52,7 @@ from job.loader.affiliation_loader import AffiliationLoader
 
 def update_affiliation_year_count():
     aff = AffiliationLoader()
-    aff._load_affiliation_ids()
+    aff.get_affiliation_data()
     pipe = RedisTemplate.pipeline()
     for i in range(0, len(aff.affiliation_ids)):
         update_one_affiliation_year_count(str(aff.affiliation_ids[i]), pipe)

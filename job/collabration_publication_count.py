@@ -70,7 +70,8 @@ def update_one_affiliation_collaboration(id, pipe):
 
 def affiliation_collaboration_publication_count():
     aff = AffiliationLoader()
-    aff._load_affiliation_ids()
+    aff.get_affiliation_data()
+
     ids = aff.affiliation_ids
     pipe = RedisTemplate.pipeline()
 
