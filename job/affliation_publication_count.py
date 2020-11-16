@@ -41,7 +41,7 @@ def update_one_affiliation_year_count(id, pipe):
                 where afar.article_id = art.id and afar.affiliation_id = 
         ''' + id + ";")
         res = json.dumps(parseInfo(Cursor.fetchone()[0].strip()))
-        pipe.set(cache_const.AFFILIATION_YEAR_COUNT.format(id), res)
+        pipe.set(cache_const.AFFILIATION_YEAR_COUNT.format(id), res, ex = time.MONTH)
     except Exception as e:
         traceback.print_exc()
         print(e)
