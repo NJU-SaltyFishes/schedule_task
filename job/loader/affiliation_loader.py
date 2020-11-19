@@ -32,15 +32,23 @@ class AffiliationLoader:
             affiliation_ids = json.loads(affiliation_ids)
             self.affiliation_ids = affiliation_ids
             for ids in chunks(self.affiliation_ids, 500):
-                keys = [AFFILIATION_RELATED_ARTICLE_ID_KEY_TEMPLATE.format(i) for i in ids]
-                values = RedisTemplate.mget(keys=keys)
-                id_dict = {}
+                article_keys = [AFFILIATION_RELATED_ARTICLE_ID_KEY_TEMPLATE.format(i) for i in ids]
+                article_values = RedisTemplate.mget(keys=article_keys)
+                article_id_dict = {}
+                author_keys = [AFFILIATION_RELATED_AUTHOR_ID_KEY_TEMPLATE.format(i) for i in ids]
+                author_values = RedisTemplate.mget(keys = author_keys)
+                author_id_dict = {}
                 for i in range(len(ids)):
-                    if values[i] is None:
-                        id_dict[ids[i]] = []
-                        continue
-                    id_dict[ids[i]] = json.loads(values[i])
-                self.related_article_dict.update(id_dict)
+                    if article_values[i] is None:
+                        article_id_dict[ids[i]] = []
+                    else:
+                        article_id_dict[ids[i]] = json.loads(article_values[i])
+                    if author_values[i] is None:
+                        author_id_dict[ids[i]] = []
+                    else:
+                        author_id_dict[ids[i]] = json.loads(author_values[i])
+                self.related_article_dict.update(article_id_dict)
+                self.related_author_dict.update(author_id_dict)
         except Exception:
             traceback.format_exc()
             return
