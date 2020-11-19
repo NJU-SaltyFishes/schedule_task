@@ -7,6 +7,7 @@ from multiprocessing import Process
 from job.affiliation_keywords import update_affiliation_keyword_job
 from job.new_publish_atricle import update_affiliation_new_article_job
 from job.load_affiliation_data import load_affiliation_data_job
+from job.affiliation_most_cited_author import update_affiliation_most_cited_author_job
 
 
 def main_loop():
@@ -31,6 +32,7 @@ def register_schedule_task():
 
     #
     schedule.every().saturday.at("20:30").do(pool_job, load_affiliation_data_job)
+    schedule.every().sunday.at("4:00").do(pool_job,update_affiliation_most_cited_author_job)
 
 
 if __name__ == "__main__":

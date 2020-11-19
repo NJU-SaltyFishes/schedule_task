@@ -41,10 +41,12 @@ class AffiliationLoader:
                 for i in range(len(ids)):
                     if article_values[i] is None:
                         article_id_dict[ids[i]] = []
+                    else:
+                        article_id_dict[ids[i]] = json.loads(article_values[i])
                     if author_values[i] is None:
                         author_id_dict[ids[i]] = []
-                    article_id_dict[ids[i]] = json.loads(article_values[i])
-                    author_id_dict[ids[i]] = json.loads(author_values[i])
+                    else:
+                        author_id_dict[ids[i]] = json.loads(author_values[i])
                 self.related_article_dict.update(article_id_dict)
                 self.related_author_dict.update(author_id_dict)
         except Exception:
