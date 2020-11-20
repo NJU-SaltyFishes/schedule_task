@@ -12,17 +12,17 @@ def update_affiliation_most_cited_author_job():
     affiliation.get_affiliation_data()
     related_author_list = sorted(affiliation.related_author_dict.items(),key=lambda x:x[0],reverse=False)
     related_most_cited_author_dict = {}
+    sql = '''
+                        SELECT aut.id AS authorId,aut.name AS authorName,SUM(art.citation_count) AS citedNum
+                        FROM article art,author aut,author_article auar
+                        WHERE aut.id IN %s
+                        AND aut.id = auar.author_id AND art.id = auar.article_id
+                        GROUP BY authorId,authorName
+                        order by citedNum desc LIMIT 1
+                '''
     for affiliations_authors in chunks(related_author_list,500):
         related_dict = {}
         for affiliation_authors in affiliations_authors:
-            sql = '''
-                    SELECT aut.id AS authorId,aut.name AS authorName,SUM(art.citation_count) AS citedNum
-                    FROM article art,author aut,author_article auar
-                    WHERE aut.id IN %s
-                    AND aut.id = auar.author_id AND art.id = auar.article_id
-                    GROUP BY authorId,authorName
-                    order by citedNum desc LIMIT 1
-            '''
             affiliation_id = affiliation_authors[0]
             authors = affiliation_authors[1]
             Cursor.execute(sql, (authors,))
