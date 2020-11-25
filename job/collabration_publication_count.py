@@ -43,7 +43,7 @@ def parse_collaboration_info(info):
         try:
             Cursor.execute('select name from affiliation where id = {};'.format(affid))
             res[i][0] = Cursor.fetchone()[0]
-            res[i] = {res[i][0]: res[i][1]}
+            res[i] = {"affiliation_id":affid,"affiliation_name":res[i][0],"collaboration_count": res[i][1]}
         except Exception as e:
             traceback.print_exc()
             print(e)
