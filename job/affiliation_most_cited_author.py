@@ -32,7 +32,7 @@ def update_affiliation_most_cited_author_job():
             author_id = raw_result[0]
             author_name = raw_result[1]
             cited_num = int(str(raw_result[2]))
-            related_dict[affiliation_id] = (author_id,author_name,cited_num)
+            related_dict[affiliation_id] = {"author_id":author_id,"author_name":author_name,"cited_num":cited_num}
         related_most_cited_author_dict.update(related_dict)
     print("{} related_most_cited_author_dict_len: {}".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
                                                    len(related_most_cited_author_dict)))
@@ -46,15 +46,15 @@ def update_affiliation_most_cited_author_job():
                 pipeline.set(author_key, json.dumps(most_cited_author), ex=1 * MONTH)
         pipeline.execute()
         time.sleep(1)
-    print("{} save_to_redis finished".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+    print("{} update_affiliation_most_cited_author_job finished".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
 
 
 
 
 
 if __name__ == "__main__":
-    start = time.time()
+    start_time = time.time()
     update_affiliation_most_cited_author_job()
-    end = time.time()
-    c = end - start
-    print('Format Runtime is:{0:.3f}s'.format(c))
+    end_time = time.time()
+    duration = end_time - start_time
+    print('update_affiliation_most_cited_author_job Runtime is:{0:.3f}s'.format(duration))

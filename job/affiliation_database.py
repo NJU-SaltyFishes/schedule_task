@@ -87,14 +87,15 @@ def update_affiliation_database_job():
             print(e)
             Connection.rollback()
         time.sleep(1)
-    print("{} save_to_mysql finished".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+    print("{} update_affiliation_database_job finished".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
 
 
 
 
 
 if __name__ == "__main__":
-    start = time.time()
+    start_time = time.time()
     update_affiliation_database_job()
-    end = time.time()
-    print('Format Runtime is:{0:.3f}s'.format(end-start))
+    end_time = time.time()
+    duration = end_time-start_time
+    print('update_affiliation_database_job runtime is:{0:.3f}s'.format(duration))
