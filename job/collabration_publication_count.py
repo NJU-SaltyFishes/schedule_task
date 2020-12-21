@@ -62,7 +62,7 @@ def update_one_affiliation_collaboration(id, pipe):
         inf =Cursor.fetchone()[0]
         if inf and len(inf)>0:
             res = parse_collaboration_info(inf)
-            pipe.set(AFFILIATION_COLLABORATION_PUBLICATION_COUNT.format(id), json.dumps(res), ex = time.MONTH)
+            pipe.set(AFFILIATION_COLLABORATION_PUBLICATION_COUNT.format(id), json.dumps(res))
     except Exception as e:
         traceback.print_exc()
         print(e)

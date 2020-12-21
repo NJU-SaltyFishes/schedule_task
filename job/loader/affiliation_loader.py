@@ -111,7 +111,7 @@ class AffiliationLoader:
 
     def _save_to_redis(self):
         if len(self.affiliation_ids) > 0:
-            RedisTemplate.set(AFFILIATION_ALL_ID, json.dumps(self.affiliation_ids), ex=1*30*24*HOUR)
+            RedisTemplate.set(AFFILIATION_ALL_ID, json.dumps(self.affiliation_ids))
 
         pipeline = RedisTemplate.pipeline()
         for ids in chunks(self.affiliation_ids, 500):
@@ -121,9 +121,9 @@ class AffiliationLoader:
                 related_article_ids = self.related_article_dict.get(_id)
                 related_author_ids = self.related_author_dict.get(_id)
                 if related_article_ids:
-                    pipeline.set(article_key, json.dumps(self.related_article_dict[_id]), ex=1 * 30 * 24 * HOUR)
+                    pipeline.set(article_key, json.dumps(self.related_article_dict[_id]))
                 if related_author_ids:
-                    pipeline.set(author_key,json.dumps(self.related_author_dict[_id]),ex=1 * 30 * 24 * HOUR)
+                    pipeline.set(author_key,json.dumps(self.related_author_dict[_id]))
             pipeline.execute()
             time.sleep(1)
         print("{} save_to_redis finished".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))

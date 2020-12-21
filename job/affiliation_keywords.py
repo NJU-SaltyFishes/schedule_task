@@ -45,7 +45,7 @@ def update_affiliation_keyword_job():
             article_key = AFFILIATION_RELATED_KEYWORD_KEY_TEMPLATE.format(article[0])
             keywords = related_keyword_dict.get(article[0])
             if keywords:
-                pipeline.set(article_key, json.dumps(keywords), ex=1 * MONTH)
+                pipeline.set(article_key, json.dumps(keywords))
         pipeline.execute()
         time.sleep(1)
     print("{} update_affiliation_keyword_job".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))

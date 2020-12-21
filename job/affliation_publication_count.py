@@ -24,7 +24,8 @@ def parseInfo(info: str):
         2020: 0,
         2021: 0,
     }
-
+    if not info:
+        return dict
     info = info.split(',')
     for k in info:
         if len(k) == 4:
@@ -40,8 +41,11 @@ def update_one_affiliation_year_count(id, pipe):
             from article art, affiliation_article afar
                 where afar.article_id = art.id and afar.affiliation_id = 
         ''' + id + ";")
-        res = json.dumps(parseInfo(Cursor.fetchone()[0].strip()))
-        pipe.set(cache_const.AFFILIATION_YEAR_COUNT.format(id), res, ex = time.MONTH)
+        raw_result = Cursor.fetchone()[0]
+        if raw_result:
+            raw_result = raw_result.strip()
+        res = json.dumps(parseInfo(raw_result))
+        pipe.set(cache_const.AFFILIATION_YEAR_COUNT.format(id), res)
     except Exception as e:
         traceback.print_exc()
         print(e)
