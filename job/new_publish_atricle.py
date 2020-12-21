@@ -40,7 +40,7 @@ def update_affiliation_new_article_job():
             article_key = AFFILIATION_RELATED_NEW_ARTICLE_ID_KEY_TEMPLATE.format(article[0])
             new_article_id = related_new_article_dict.get(article[0])
             if new_article_id:
-                pipeline.set(article_key,json.dumps(new_article_id),ex=1 * MONTH)
+                pipeline.set(article_key,json.dumps(new_article_id))
         pipeline.execute()
         time.sleep(1)
     print("{} update_affiliation_new_article_job finished".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))

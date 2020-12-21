@@ -26,8 +26,9 @@ def update_affiliation_most_cited_author_job():
             affiliation_id = affiliation_authors[0]
             authors = affiliation_authors[1]
             Cursor.execute(sql, (authors,))
-            raw_result = list(Cursor.fetchone())
+            raw_result = Cursor.fetchone()
             if raw_result is None:
+                print(affiliation_id)
                 continue
             author_id = raw_result[0]
             author_name = raw_result[1]
@@ -43,7 +44,7 @@ def update_affiliation_most_cited_author_job():
             author_key = AFFILIATION_RELATED_MOST_CITED_AUTHOR_KEY_TEMPLATE.format(author[0])
             most_cited_author = related_most_cited_author_dict.get(author[0])
             if most_cited_author:
-                pipeline.set(author_key, json.dumps(most_cited_author), ex=1 * MONTH)
+                pipeline.set(author_key, json.dumps(most_cited_author))
         pipeline.execute()
         time.sleep(1)
     print("{} update_affiliation_most_cited_author_job finished".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
